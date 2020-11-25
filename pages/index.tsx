@@ -9,7 +9,6 @@ import Footer from "../src/components/footer";
 
 export default function Home(): JSX.Element {
     return (
-        <Layout>
             <EventContextProvider>
                 <Content/>
                 <Axis/>
@@ -19,6 +18,5 @@ export default function Home(): JSX.Element {
                     </div>
                 </div>
             </EventContextProvider>
-        </Layout>
     )
 }
