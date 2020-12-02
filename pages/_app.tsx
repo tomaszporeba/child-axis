@@ -1,11 +1,12 @@
 import {AppProps} from 'next/app'
 import React, {Component, Dispatch, useContext} from "react";
-import {Action, EventContext, EventContextProvider, Events, GlobalState} from "../utils/EventContext";
+import {Action, GlobalContext, GlobalContextProvider, Actions, GlobalState} from "../utils/GlobalContext";
 import Header from "../src/components/header";
 import Footer from "../src/components/footer";
 import Sidebar from "../src/components/sidebar";
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components'
 import Link from "next/link";
+import Axis from "../src/components/axis";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -13,14 +14,16 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     background: #0b0b0b;
-    font-size: 10px;
-    font-color: white;
     font-family: Montserrat, sans-serif;
+    color: white;
   }
 `;
 
 const FullContainer = styled.div`
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100vh;
     transition: all .3s ease-in-out;
@@ -34,15 +37,19 @@ const FullContainer = styled.div`
 
 const Container = styled.div`
     display:flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 1440px;
-    background: yellow;
+    width: 75%;
+    height: 100%;
     margin: 0 auto;
+    
+    @media (max-width: 1024px) {
+    width: 100%;
+    }
 `;
 
-const MenuContainer = styled.div`
+const MenuContainer = styled.aside`
+    font-color: white;
     position: absolute;
     width: 100%;
     height: 100vh;
@@ -51,10 +58,17 @@ const MenuContainer = styled.div`
     align-items: center;
 `;
 
-const MenuDiv = styled.div`
+const MenuDiv = styled.nav`
     width: 20%;
     text-align: right;
     font-size: 3rem;
+    
+    @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+    @media (max-width: 426px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const StyledHeader = styled.div`
@@ -66,7 +80,6 @@ const StyledA = styled.a`
     position: relative;
     line-height: 1.6;
     text-transform: capitalize;
-    font-size: 55px;
     font-weight: 900;
     color: white;
 
@@ -84,14 +97,39 @@ const StyledA = styled.a`
       transform: translateX(-50%);
       background-color: ${(props) => props.theme.colors.primary}
     }
+    @media (max-width: 426px) {
+    &:before {
+    top: 38%
+    }
+  }  
 `;
+
+const AxisContainer = styled.div`
+  width: 10%;
+`
+
+const ContentContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+`
+
+const ComponentContainer = styled.div`
+    flex: 1;
+`
+
+
 
 const theme = {
     colors: {
         primary: '#0070f3',
     },
     font: {
-        size: '20px'
+        size: {
+            small: '10px',
+            medium: '16px',
+            large: '30px'
+        }
     }
 };
 
@@ -100,9 +138,9 @@ function App({Component, pageProps}: AppProps) {
         <>
             <GlobalStyle/>
             <ThemeProvider theme={theme}>
-                <EventContextProvider>
+                <GlobalContextProvider>
                     <ContainerComponent pageProps={pageProps} Component={Component} router={null}/>
-                </EventContextProvider>
+                </GlobalContextProvider>
             </ThemeProvider>
         </>)
 }
@@ -110,7 +148,7 @@ function App({Component, pageProps}: AppProps) {
 export default App
 
 function ContainerComponent({Component, pageProps}: AppProps) {
-    const {state, dispatch} = useContext(EventContext);
+    const {state, dispatch} = useContext(GlobalContext);
     return <>
         <MenuContainer>
             <MenuDiv>
@@ -122,10 +160,14 @@ function ContainerComponent({Component, pageProps}: AppProps) {
                 <StyledHeader>
                     <Header/>
                 </StyledHeader>
-                <div>
-                    <Component {...pageProps} />
-                </div>
-                <Sidebar/>
+                <ContentContainer>
+                    <AxisContainer>
+                            <Axis/>
+                    </AxisContainer>
+                    <ComponentContainer>
+                        <Component {...pageProps} />
+                    </ComponentContainer>
+                </ContentContainer>
                 <Footer/>
             </Container>
         </FullContainer>
@@ -150,14 +192,15 @@ function GenerateMenu({menuItems}): JSX.Element {
     return <ul>{items}</ul>
 }
 
-function MenuItem(props: {menuItem: MenuItemType}): JSX.Element {
-    const {state, dispatch} = useContext(EventContext);
-    return <ul onClick={()=> handleMenuItemClick(state, dispatch, props.menuItem.name)}>
-        <Link href={props.menuItem.path}><StyledA isActive={state.selectedMenu === props.menuItem.name}>{props.menuItem.name}</StyledA></Link>
+function MenuItem(props: { menuItem: MenuItemType }): JSX.Element {
+    const {state, dispatch} = useContext(GlobalContext);
+    return <ul onClick={() => handleMenuItemClick(state, dispatch, props.menuItem.name)}>
+        <Link href={props.menuItem.path}><StyledA
+            isActive={state.selectedMenu === props.menuItem.name}>{props.menuItem.name}</StyledA></Link>
     </ul>
 }
 
-function handleMenuItemClick(state: GlobalState, dispatch: Dispatch<Action<Events>>, menuName: string) {
-    dispatch({type: Events.OPEN_SIDEBAR, payload: !state.isSidebarOpen});
-    dispatch({type: Events.SELECTED_MENU, payload: menuName})
+function handleMenuItemClick(state: GlobalState, dispatch: Dispatch<Action<Actions>>, menuName: string) {
+    dispatch({type: Actions.OPEN_SIDEBAR, payload: !state.isSidebarOpen});
+    dispatch({type: Actions.SELECTED_MENU, payload: menuName})
 }

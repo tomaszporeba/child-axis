@@ -14,7 +14,7 @@
     "express": "^4.17.1",
     "graphql": "^15.4.0",
     "mongoose": "^5.10.11",
-    "next": "9.5.5",
+    "next": "canary",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "reflect-metadata": "^0.1.13",

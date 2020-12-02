@@ -1,12 +1,35 @@
 import styled from 'styled-components'
 import React, {useContext} from 'react'
-import {EventContext, Events} from "../../../utils/EventContext";
+import Image from 'next/image'
+import {GlobalContext, Actions} from "../../../utils/GlobalContext";
+import Link from "next/link";
 
 const Navbar = styled.header`
-    font-size: ${(props) => props.theme.font.size};
+    font-size: ${(props) => props.theme.font.size.medium};
+    text-transform: uppercase;
+    font-weight: 700;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    line-height: 10px;
+    
+    a {
+    text-decoration: none;
+    color: white;
+    };
 `;
+
+const LogoContainer = styled.div`
+    margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const GlobalP = styled.p`
+    margin-left: 10px;
+`
 
 const HamburgerDiv = styled.div`
     width: 50px;
@@ -15,8 +38,8 @@ const HamburgerDiv = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-right: 20px;
     cursor: pointer;
-    background: green;
 `
 
 const HamburgerSpan = styled.span`
@@ -44,11 +67,17 @@ const HamburgerSpan = styled.span`
     `;
 
 export default function Header(): JSX.Element {
-    const {state, dispatch} = useContext(EventContext);
+    const {state, dispatch} = useContext(GlobalContext);
     return <Navbar>
-        HEADER
+        <Link href='/'><a>
+            <LogoContainer>
+                <Image src="/logo.png" width={30} height={28}/>
+                <GlobalP>GLOBAL</GlobalP>
+            </LogoContainer>
+        </a>
+        </Link>
         <HamburgerDiv>
-            <HamburgerSpan onClick={() => dispatch({type: Events.OPEN_SIDEBAR, payload: !state.isSidebarOpen})}/>
+            <HamburgerSpan onClick={() => dispatch({type: Actions.OPEN_SIDEBAR, payload: !state.isSidebarOpen})}/>
         </HamburgerDiv>
     </Navbar>
 }
