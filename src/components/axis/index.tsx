@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Actions, GlobalContext} from "../../../utils/GlobalContext";
 
 const SideNavContainer = styled.ul`
-    height: 80%;
+    height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -44,28 +44,33 @@ const MenuLi = styled.li`
     color: ${(props) => props.selected ? 'blue': 'white'};
   }
 `
+const eventsToAdd = [
+    {
+        id: 1,
+        name: 'Kupa',
+        highlights: [{id: 0, name: 'lorems', description: 'lorem lorem lorem'}, {
+            id: 1, name: 'ipsums',
+            description: 'ipsum ipsum ipsumm'
+        }, {id: 2, name: 'dolorsse', description: 'dolore dolore dolore'}]
+    },
+];
 
 export default function Axis(): JSX.Element {
+    const {state, dispatch} = useContext(GlobalContext);
     return <SideNavContainer>
         <LiItems/>
+        <button onClick={() => dispatch({type: Actions.ADD_EVENT, payload: eventsToAdd[state.events.length -1]})}>Add event</button>
     </SideNavContainer>
 }
 
-const liItems = [
-    {id: 1, name: 'Narodziny'},
-    {id: 2, name: 'Kupa'},
-    {id: 3, name: 'Dupa'},
-    {id: 4, name: 'Siki'},
-];
 
 function LiItems(): JSX.Element {
     const {state, dispatch} = useContext(GlobalContext);
-    console.log(JSON.stringify(state))
-    const items = liItems.map((item, index) =>
-        <MenuLi selected={state.selectedEvent.id === item.id}
-                onClick={() => dispatch({type: Actions.SELECTED_EVENT, payload: item})}
+    const items = state.events.map(({id, name}, index) =>
+        <MenuLi selected={state.selectedEvent === id}
+                onClick={() => dispatch({type: Actions.SELECTED_EVENT, payload: id})}
                 key={index}>
-            <span>{item.name}</span>
+            <span>{name}</span>
         </MenuLi>);
     return <>{items}</>
 }

@@ -3,10 +3,8 @@ import React, {Component, Dispatch, useContext} from "react";
 import {Action, GlobalContext, GlobalContextProvider, Actions, GlobalState} from "../utils/GlobalContext";
 import Header from "../src/components/header";
 import Footer from "../src/components/footer";
-import Sidebar from "../src/components/sidebar";
 import styled, {createGlobalStyle, ThemeProvider} from 'styled-components'
 import Link from "next/link";
-import Axis from "../src/components/axis";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -104,14 +102,11 @@ const StyledA = styled.a`
   }  
 `;
 
-const AxisContainer = styled.div`
-  width: 10%;
-`
-
 const ContentContainer = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    padding-top: 50px;
 `
 
 const ComponentContainer = styled.div`
@@ -161,11 +156,8 @@ function ContainerComponent({Component, pageProps}: AppProps) {
                     <Header/>
                 </StyledHeader>
                 <ContentContainer>
-                    <AxisContainer>
-                            <Axis/>
-                    </AxisContainer>
                     <ComponentContainer>
-                        <Component {...pageProps} />
+                        <Component state={state} {...pageProps} />
                     </ComponentContainer>
                 </ContentContainer>
                 <Footer/>

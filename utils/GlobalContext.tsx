@@ -1,12 +1,21 @@
 import {createContext, Dispatch, useReducer} from 'react';
 
-const initialState = {events: [], isSidebarOpen: false, selectedMenu: 'home', selectedEvent: {id: 1, name: 'Narodziny'}};
+const initialState = {
+    events: [{
+        id: 0,
+        name: 'Narodziny',
+        highlights: [{id: 0, name: 'lorem', description: 'lorem lorem lorem'}, {
+            id: 1, name: 'ipsum',
+            description: 'ipsum ipsum ipsumm'
+        }, {id: 2, name: 'dolore', description: 'dolore dolore dolore'}]
+    }], isSidebarOpen: false, selectedMenu: 'home', selectedEvent: 0
+};
 
 export interface GlobalState {
-    events: object[];
+    events: any[];
     isSidebarOpen: boolean;
     selectedMenu: string;
-    selectedEvent: {id: number; name: string};
+    selectedEvent: number;
 }
 
 export interface Action<R> {
@@ -27,7 +36,7 @@ const reducer = (state: GlobalState, action: Action<Actions>) => {
         case Actions.GET_EVENTS:
             return {...state, events: action.payload};
         case Actions.ADD_EVENT:
-            return {...state, events: {...state.events, ...action.payload}};
+            return {...state, events: [...state.events, action.payload]};
         case Actions.OPEN_SIDEBAR:
             return {...state, isSidebarOpen: action.payload};
         case Actions.SELECTED_MENU:
