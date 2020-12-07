@@ -7,44 +7,38 @@ const {
 
 const sequelize = db.sequelize;
 
-interface UserAttributes {
+interface EventAttributes {
   id: number;
-  firstName: string;
-  password: string;
+  name: string;
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {}
+interface EventCreationAttributes extends Optional<EventAttributes, "id"> {}
 
-export class User extends Model<UserAttributes, UserCreationAttributes>
-    implements UserAttributes {
+export class Event extends Model<EventAttributes, EventCreationAttributes>
+    implements EventAttributes {
   public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public firstName!: string;
-  public password!: string | null; // for nullable fields
+  public name!: string;
 
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  }
+}
 
-User.init(
+Event.init(
     {
       id: {
         type: DataTypes.INTEGER.UNSIGNED,
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
+      name: {
         type: new DataTypes.STRING(128),
         allowNull: false,
-      },
-      password: {
-        type: new DataTypes.STRING(128),
-        allowNull: true,
-      },
+      }
     },
     {
-      tableName: "users",
+      tableName: "events",
       sequelize, // passing the `sequelize` instance is required
     }
 );

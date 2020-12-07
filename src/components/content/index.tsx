@@ -68,24 +68,6 @@ const StyledButton = styled.div`
 
 export default function Content(): JSX.Element {
 
-    useEffect(() => {
-        const onScroll = e => {
-
-            _.throttle(function() {
-                console.log('test');
-            }, 2000);
-
-            if (e.deltaY > 0) {
-                _.throttle(() => dispatch({type: Actions.SELECTED_EVENT, payload: state.selectedEvent + 1}), 200, {trailing: false})
-            } else {
-                _.throttle(() => dispatch({type: Actions.SELECTED_EVENT, payload: state.selectedEvent - 1}), 200, {trailing: false})
-
-            }
-        };
-        window.addEventListener('wheel', onScroll);
-
-        return () => window.removeEventListener("wheel", onScroll);
-    }, []);
     const {state, dispatch} = useContext(GlobalContext);
 
     const event = state.events[state.selectedEvent];

@@ -1,13 +1,17 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {User} from "../../models/users";
+import {Highlight, Event} from "../../models";
 
 async function getUsers(req: NextApiRequest, res: NextApiResponse) {
-    const newUser = await User.create({
-        name: "Johnny",
-        firstName: "John",
-            password: "dupa"
-    });
-    const users = await User.findAll();
+    // const newUser = await Event.create({
+    //     name: "Johnny",
+    //     description: "John"
+    // });
+    // const users = await Event.findAll({
+    //     include: [
+    //         {model: Highlight, as: 'highlights'}
+    //     ]
+    // });
+    const users = await Highlight.findAll();
     res.json(users);
 }
 export default getUsers;
