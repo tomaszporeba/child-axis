@@ -1,14 +1,7 @@
 import {createContext, Dispatch, useReducer} from 'react';
 
 const initialState = {
-    events: [{
-        id: 0,
-        name: 'Narodziny',
-        highlights: [{id: 0, name: 'lorem', description: 'lorem lorem lorem'}, {
-            id: 1, name: 'ipsum',
-            description: 'ipsum ipsum ipsumm'
-        }, {id: 2, name: 'dolore', description: 'dolore dolore dolore'}]
-    }], isSidebarOpen: false, selectedMenu: 'home', selectedEvent: 0
+    events: [], isSidebarOpen: false, selectedMenu: 'home', selectedEvent: 0
 };
 
 export interface GlobalState {
@@ -25,6 +18,7 @@ export interface Action<R> {
 
 export enum Actions {
     GET_EVENTS = 'GET_EVENTS',
+    SET_EVENTS = 'SET_EVENTS',
     ADD_EVENT = 'ADD_EVENT',
     OPEN_SIDEBAR = 'OPEN_SIDEBAR',
     SELECTED_MENU = 'SELECTED_MENU',
@@ -43,6 +37,8 @@ const reducer = (state: GlobalState, action: Action<Actions>) => {
             return {...state, selectedMenu: action.payload};
         case Actions.SELECTED_EVENT:
             return {...state, selectedEvent: action.payload};
+        case Actions.SET_EVENTS:
+            return {...state, events: action.payload}
         default:
             return state;
     }

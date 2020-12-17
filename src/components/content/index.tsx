@@ -66,11 +66,8 @@ const StyledButton = styled.div`
     }
 `
 
-export default function Content(): JSX.Element {
-
-    const {state, dispatch} = useContext(GlobalContext);
-
-    const event = state.events[state.selectedEvent];
+export default function Content({events, selectedEvent}): JSX.Element {
+    const event = events[selectedEvent];
     return <ContentWrapper>
         <EventCore>
             <Name>
@@ -86,7 +83,6 @@ export default function Content(): JSX.Element {
             </Astronaut>
         </EventCore>
         <EventHighlights>
-            {console.log(event.highlights)}
             {event.highlights.map((highlight, index) => <Highlight highlight={highlight} key={index}/>)}
         </EventHighlights>
     </ContentWrapper>

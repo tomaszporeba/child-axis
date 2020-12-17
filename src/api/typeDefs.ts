@@ -6,7 +6,21 @@ export  const  typeDefs  =  gql`
         firstName: String
         password: String
     }
+    
+    type Event {
+        id: ID
+        name: String
+        highlights: [Highlight]
+    }
+    
+    type Highlight {
+        id: ID
+        name: String
+        description: String
+    }
 
     type  Query {
         users: [User]
+        events: [Event]
+        highlights: [Highlight]
     }`;

@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.6",
     "apollo-server-express": "^2.18.2",
     "apollo-server-micro": "^2.19.0",
     "class-validator": "^0.12.2",
