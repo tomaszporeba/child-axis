@@ -13,7 +13,19 @@ export  const  typeDefs  =  gql`
         highlights: [Highlight]
     }
     
+    input EventInput {
+        id: ID
+        name: String
+        highlights: [HighlightInput]
+    }
+    
     type Highlight {
+        id: ID
+        name: String
+        description: String
+    }
+    
+    input HighlightInput {
         id: ID
         name: String
         description: String
@@ -23,4 +35,9 @@ export  const  typeDefs  =  gql`
         users: [User]
         events: [Event]
         highlights: [Highlight]
-    }`;
+    }
+    type Mutation {
+        addEvent(event: EventInput): Event
+    }
+    `
+;

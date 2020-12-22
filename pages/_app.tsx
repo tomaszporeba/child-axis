@@ -5,7 +5,8 @@ import Header from "../src/components/header";
 import Footer from "../src/components/footer";
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 import Link from "next/link";
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, ApolloProvider, from, HttpLink, InMemoryCache } from '@apollo/client';
+import { onError } from "@apollo/client/link/error";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -130,9 +131,21 @@ const theme = {
     }
 };
 
+const link = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+        graphQLErrors.map(({ message, locations, path }) =>
+            console.log(
+                `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+            ),
+        );
+
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const client = new ApolloClient({
     uri: 'http://localhost:3000/api/graphql',
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    link: ApolloLink.from([link, new HttpLink({uri: 'http://localhost:3000/api/graphql'})])
 });
 
 function App({Component, pageProps}: AppProps) {

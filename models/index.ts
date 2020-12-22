@@ -1,13 +1,20 @@
 import {Highlight} from "./highlight";
 import {Event} from "./event";
 
-Event.hasMany(Highlight, {
+Event.Highlights = Event.hasMany(Highlight, {
     sourceKey: "id",
-    foreignKey: "eventId",
+    foreignKey: {
+        name: "eventId"
+    },
     as: "highlights", // this determines the name in `associations`!
 });
 
-// Highlight.belongsTo(Event, {foreignKey: 'eventId'});
-
+Highlight.Event = Highlight.belongsTo(Event, {
+    onDelete: 'cascade',
+    targetKey: 'id',
+    foreignKey: {
+        name: 'eventId',
+    }
+});
 
 export { Event, Highlight }

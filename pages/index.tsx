@@ -38,7 +38,7 @@ export default function Home(): JSX.Element {
                 <Axis/>
             </AxisContainer>
             <ContentWrapper>
-                <Content events = {state.events} selectedEvent={state.selectedEvent}/>
+                {/*<Content events = {state.events} selectedEvent={state.selectedEvent}/>*/}
             </ContentWrapper>
         </Container>
     )

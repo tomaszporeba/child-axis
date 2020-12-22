@@ -1,13 +1,8 @@
-import {User} from "../../models/users";
 import { Event, Highlight } from "../../models";
 
 
 export const resolvers = {
     Query: {
-        async users() {
-            const users = await User.findAll();
-            return users.map(user => user.get({plain: true}))
-        },
         async events() {
             const events = (await Event.findAll({
                 include: [
@@ -17,4 +12,12 @@ export const resolvers = {
             return events;
         }
     },
+    Mutation: {
+        async addEvent(root, args: {event: Event}, context, info) {
+            const event = await Event.create(args.event, {include: [{association: Event.Highlights, as: 'highlights'}]});
+            // await Promise.all(event.highlights.map(async item => await item.setEvent(event)))
+            // console.log('events: \n', JSON.stringify(event))
+            return event;
+        }
+    }
 }

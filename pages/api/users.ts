@@ -6,11 +6,16 @@ async function getUsers(req: NextApiRequest, res: NextApiResponse) {
     //     name: "Johnny",
     //     description: "John"
     // });
+
+
     const users = await Event.findAll({
         include: [
             {model: Highlight, as: 'highlights'}
         ]
     });
+
+
+    // const users = await Highlight.findAll();
     // const users = await Event.findAll();
     res.json(users);
 }

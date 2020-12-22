@@ -1,44 +1,28 @@
-import {DataTypes, Optional} from "sequelize";
+import { DataTypes, Optional } from "sequelize";
 import db from './initialization'
 
 const {
-  Model
+    Model
 } = require('sequelize');
 
 const sequelize = db.sequelize;
 
 interface EventAttributes {
-  id: number;
-  name: string;
+    id: number;
+    name: string;
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
-interface EventCreationAttributes extends Optional<EventAttributes, "id"> {}
-
-export class Event extends Model<EventAttributes, EventCreationAttributes>
-    implements EventAttributes {
-  public id!: number; // Note that the `null assertion` `!` is required in strict mode.
-  public name!: string;
-
-  // timestamps!
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+interface EventCreationAttributes extends Optional<EventAttributes, "id"> {
 }
 
-Event.init(
-    {
-      id: {
-        type: DataTypes.INTEGER.UNSIGNED,
-        autoIncrement: true,
+export const Event = sequelize.define<EventCreationAttributes>("event", {
+    id: {
         primaryKey: true,
-      },
-      name: {
-        type: new DataTypes.STRING(128),
-        allowNull: false,
-      }
+        autoIncrement: true,
+        type: DataTypes.INTEGER.UNSIGNED,
     },
-    {
-      tableName: "events",
-      sequelize, // passing the `sequelize` instance is required
-    }
-);
+    name: {
+        type: DataTypes.STRING,
+    },
+});
