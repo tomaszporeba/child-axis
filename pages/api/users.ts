@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {Highlight, Event} from "../../models";
+import { Highlight, Event, User } from "../../models";
 
 async function getUsers(req: NextApiRequest, res: NextApiResponse) {
     // const newUser = await Event.create({
@@ -8,11 +8,13 @@ async function getUsers(req: NextApiRequest, res: NextApiResponse) {
     // });
 
 
-    const users = await Event.findAll({
-        include: [
-            {model: Highlight, as: 'highlights'}
-        ]
-    });
+    // const users = await Event.findAll({
+    //     include: [
+    //         {model: Highlight, as: 'highlights'}
+    //     ]
+    // });
+
+    const users = await User.findAll()
 
 
     // const users = await Highlight.findAll();

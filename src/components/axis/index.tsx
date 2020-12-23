@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { Actions, GlobalContext } from "../../../utils/GlobalContext";
 import { Event } from '../../../models'
 import { useMutation } from '@apollo/client';
-import { ADD_EVENT } from '../../../pages/api/graphql/queries';
+import { ADD_EVENT, ADD_USER } from '../../../pages/api/graphql/queries';
+import { UserAttributes } from '../../../models/user';
+import { Optional } from 'sequelize';
 
 const SideNavContainer = styled.ul`
   height: 100%;
@@ -57,12 +59,22 @@ const eventsToAdd = [
     },
 ];
 
+const usersToAdd: Optional<UserAttributes, "id">[] = [
+    {
+        firstName: 'adam',
+        lastName: 'malysz',
+        email: 'adam@ma',
+        password: 'dupa'
+    }
+]
+
 export default function Axis(): JSX.Element {
     const [addEvent] = useMutation(ADD_EVENT);
+    const [addUser] = useMutation(ADD_USER);
 
     return <SideNavContainer>
         <LiItems/>
-        <button onClick={() => addEvent({ variables: {event: eventsToAdd[0]} })}>Add event</button>
+        <button onClick={() => addUser({ variables: {user: usersToAdd[0]} })}>Add event</button>
     </SideNavContainer>
 }
 

@@ -21,3 +21,12 @@ export const ADD_EVENT = gql`
             name}
         }
     }`
+export const ADD_USER = gql`
+    mutation AddUser($user: UserInput) {
+        addUser(user: $user) {
+            firstName
+            lastName
+            password
+            email
+        }
+    }`

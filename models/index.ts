@@ -1,5 +1,6 @@
 import {Highlight} from "./highlight";
 import {Event} from "./event";
+import {User} from "./user";
 
 Event.Highlights = Event.hasMany(Highlight, {
     sourceKey: "id",
@@ -17,4 +18,4 @@ Highlight.Event = Highlight.belongsTo(Event, {
     }
 });
 
-export { Event, Highlight }
+export { Event, Highlight, User}
