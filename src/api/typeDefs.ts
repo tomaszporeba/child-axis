@@ -40,6 +40,15 @@ export  const  typeDefs  =  gql`
         email: String
         password: String
     }
+    
+    input LoginInput {
+        email: String
+        password: String
+    }
+    
+    type Token {
+        authToken: String
+    }
 
     type  Query {
         users: [User]
@@ -50,6 +59,7 @@ export  const  typeDefs  =  gql`
     type Mutation {
         addEvent(event: EventInput): Event
         addUser(user: UserInput): User
+        login(inputs: LoginInput): Token
     }
     `
 ;

@@ -30,3 +30,9 @@ export const ADD_USER = gql`
             email
         }
     }`
+export const LOGIN = gql`
+    mutation Login($inputs: LoginInput) {
+        login(inputs: $inputs) {
+            authToken
+        }
+    }`

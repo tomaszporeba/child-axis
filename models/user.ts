@@ -17,7 +17,7 @@ export interface UserAttributes {
 }
 
 // Some attributes are optional in `User.build` and `User.create` calls
-interface UserCreationAttributes extends Optional<UserAttributes, "id"> {
+export interface UserCreationAttributes extends Optional<UserAttributes, "id"> {
 }
 
 export const User = sequelize.define<UserCreationAttributes>("user", {

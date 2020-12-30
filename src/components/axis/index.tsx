@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from 'styled-components';
 import { Actions, GlobalContext } from "../../../utils/GlobalContext";
 import { Event } from '../../../models'
@@ -74,15 +74,21 @@ export default function Axis(): JSX.Element {
 
     return <SideNavContainer>
         <LiItems/>
-        <button onClick={() => addUser({ variables: {user: usersToAdd[0]} })}>Add event</button>
+        <button onClick={() => addEvent({ variables: {user: eventsToAdd[0]} })}>Add event</button>
     </SideNavContainer>
 }
 
 
 function LiItems(): JSX.Element
 {
+    const [events, setEvents] = useState([])
     const {state, dispatch} = useContext(GlobalContext);
-    const items = state.events.map(({id, name}, index) =>
+    useEffect(() => {
+        if (state.events) {
+            setEvents(state.events);
+        }
+    }, [state])
+    const items = events.map(({id, name}, index) =>
         <MenuLi selected={state.selectedEvent === id}
                 onClick={() => dispatch({type: Actions.SELECTED_EVENT, payload: id})}
                 key={index}>

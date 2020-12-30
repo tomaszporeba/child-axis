@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Content from "../src/components/content";
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import Axis from "../src/components/axis";
-import { useQuery } from '@apollo/client';
 import { GET_EVENTS } from './api/graphql/queries';
 import { Actions, GlobalContext } from '../utils/GlobalContext';
+import { initializeClient } from './_app';
+import { NextPageContext } from 'next';
 
 const Container = styled.div`
   display: flex;
@@ -23,23 +23,36 @@ const ContentWrapper = styled.div`
 `
 
 
-export default function Home(): JSX.Element {
-    const {state, dispatch} = useContext(GlobalContext);
-    const {loading, error, data} = useQuery(GET_EVENTS);
+export default function Home({events}): JSX.Element {
+    const { dispatch} = useContext(GlobalContext);
     useEffect(() => {
-        if (data) {
-            dispatch({type: Actions.SET_EVENTS, payload: data.events})
+        if (events) {
+            dispatch({type: Actions.SET_EVENTS, payload: events})
         }
-    }, [data]);
-    return loading ? <h1>Loading</h1> :
-         (
-        <Container>
-            <AxisContainer>
-                <Axis/>
-            </AxisContainer>
-            <ContentWrapper>
-                {/*<Content events = {state.events} selectedEvent={state.selectedEvent}/>*/}
-            </ContentWrapper>
-        </Container>
-    )
+    }, [events]);
+    return <><Container>
+        <AxisContainer>
+            <Axis/>
+        </AxisContainer>
+        <ContentWrapper>
+            {/*<Content events = {state.events} selectedEvent={state.selectedEvent}/>*/}
+        </ContentWrapper>
+    </Container></>
 }
+
+Home.getInitialProps = async (context: NextPageContext) => {
+    console.log('context: ', context.req?.headers)
+    return {}
+}
+
+export async function getInitialProps(context) {
+    console.log('context', context.query);
+    const client = initializeClient();
+    const {data} = await client.query({query: GET_EVENTS});
+    return {
+        props: {
+            events: data.events
+        }
+    }
+}
+

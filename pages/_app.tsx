@@ -142,11 +142,15 @@ const link = onError(({ graphQLErrors, networkError }) => {
     if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-const client = new ApolloClient({
-    uri: 'http://localhost:3000/api/graphql',
-    cache: new InMemoryCache(),
-    link: ApolloLink.from([link, new HttpLink({uri: 'http://localhost:3000/api/graphql'})])
-});
+export const initializeClient = () => {
+    return new ApolloClient({
+        uri: 'http://localhost:3000/api/graphql',
+        cache: new InMemoryCache(),
+        link: ApolloLink.from([link, new HttpLink({uri: 'http://localhost:3000/api/graphql'})])
+    })
+}
+
+const client = initializeClient();
 
 function App({Component, pageProps}: AppProps) {
     return (
